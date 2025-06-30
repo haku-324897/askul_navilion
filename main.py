@@ -145,7 +145,7 @@ if st.button("情報取得"):
             "as価格": askul_info.get("値段", ""),
             "as数量": "",
             "as購入額": "",
-            "種類": giftechs_info.get("同一商品判定", ""),
+            "as種類": giftechs_info.get("同一商品判定", ""),
             "nv製品": giftechs_info.get("製品", ""),
             "nv員数": giftechs_info.get("個数_シート", ""),
             "nv申し込み番号": giftechs_info.get("申し込み番号", ""),
@@ -210,7 +210,7 @@ if st.button("情報取得"):
         df[''] = df.apply(mark_circle, axis=1)
         # カラム順序を明示
         columns = [
-            "as製品", "as員数", "JANコード", "asURL", "as価格", "as数量", "as購入額", "種類",
+            "as製品", "as員数", "JANコード", "asURL", "as価格", "as数量", "as購入額", "as種類",
             "nv製品", "nv員数", "nv申し込み番号", "NV小売価格", "nv数量", "nv購入額", "nvURL", "備考", "ナビリオン値差", ""
         ]
         df = df.reindex(columns=columns)
