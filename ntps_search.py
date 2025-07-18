@@ -83,42 +83,27 @@ def get_giftechs_product_info(session: requests.Session, product_code: str) -> D
         full_to_half = str.maketrans('０１２３４５６７８９', '0123456789')
         unit_text_converted = unit_text.translate(full_to_half)
         
-        print(f"  変換前: '{unit_text}'")
-        print(f"  変換後: '{unit_text_converted}'")
-        
         # 括弧内の数字を優先的に取得
         bracket_match = re.search(r'[（(](\d+)[）)]', unit_text_converted)
-        print(f"  括弧内正規表現テスト: '{unit_text_converted}'")
         if bracket_match:
             result = int(bracket_match.group(1))
-            print(f"  括弧内マッチ: {result}")
             return result
         else:
-            print(f"  括弧内マッチ失敗")
             # 括弧内の数字を取得（括弧の後に文字が来てもOK）
             bracket_match2 = re.search(r'[（(](\d+)', unit_text_converted)
             if bracket_match2:
                 result = int(bracket_match2.group(1))
-                print(f"  括弧内マッチ2: {result}")
                 return result
-            else:
-                print(f"  括弧内マッチ2失敗")
         # 括弧がない場合は最初の数字を取得
         number_match = re.search(r'(\d+)', unit_text_converted)
         if number_match:
             result = int(number_match.group(1))
-            print(f"  最初の数字: {result}")
             return result
-        print(f"  数字なし: 0")
         return 0
     
-    # デバッグ用：抽出された数値を確認
+    # 個数を数値で比較して並べ替え（少ない方から多い方へ）
     if len(multiple_units) > 1:
-        print(f"ソート前: {multiple_units}")
-        for unit in multiple_units:
-            print(f"  {unit} -> {extract_number(unit)}")
         multiple_units.sort(key=extract_number)
-        print(f"ソート後: {multiple_units}")
     
     # 従来の個数情報（販売単位）も取得
     dl = soup.select_one('dl.tano-product-stock-left')
