@@ -203,20 +203,29 @@ if st.button("情報取得"):
             except Exception:
                 return ''
         df['ナビリオン値差'] = df.apply(calc_navi_diff, axis=1)
-        # 17個目の見出し（空白）を追加
-        def mark_circle(row):
+        # 価格判定を追加
+        def price_judgment(row):
             try:
                 val = row.get('ナビリオン値差', '')
-                if val and isinstance(val, str) and val.strip().startswith('-'):
-                    return '〇'
-                return ''
+                if not val or not isinstance(val, str):
+                    return ''
+                
+                val = val.strip()
+                if val.startswith('-'):
+                    return '安い'
+                elif val.startswith('+'):
+                    return '高い'
+                elif val == '0':
+                    return '同じ'
+                else:
+                    return ''
             except Exception:
                 return ''
-        df[''] = df.apply(mark_circle, axis=1)
+        df['価格判定'] = df.apply(price_judgment, axis=1)
         # カラム順序を明示
         columns = [
             "as製品", "as員数", "JANコード", "asURL", "as価格", "as数量", "as購入額", "as種類",
-            "nv製品", "nv員数", "nv員数（複数有）", "nv申し込み番号", "NV小売価格", "nv数量", "nv購入額", "nvURL", "備考", "ナビリオン値差", ""
+            "nv製品", "nv員数", "nv員数（複数有）", "nv申し込み番号", "NV小売価格", "nv数量", "nv購入額", "nvURL", "備考", "ナビリオン値差", "価格判定"
         ]
         df = df.reindex(columns=columns)
         st.dataframe(df)
