@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-import time
 from typing import Dict, Any, Optional
 
 ASKUL_SUFFIX = " - アスクル"
@@ -15,7 +14,6 @@ def get_askul_product_info(url: str, session: Optional[requests.Session] = None)
     session = session or requests.Session()
     try:
         res = session.get(url, headers=headers, timeout=10)
-        time.sleep(0.5)  # サーバー配慮のためのディレイ
         if res.status_code != 200:
             raise Exception(f"HTTP {res.status_code}")
     except Exception as e:
