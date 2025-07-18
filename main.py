@@ -159,7 +159,6 @@ if st.button("情報取得"):
             "備考": "",
             # ナビリオン値差は後で計算
         }
-        time.sleep(0.5)  # サーバー配慮
         return result_row
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
